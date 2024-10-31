@@ -15,7 +15,7 @@ const nhost = new NhostClient({
 
 function App() {
   return (
-    <NhostReactProvider nhost={nhost}>
+    <NhostProvider nhost={nhost}>
       <BrowserRouter>
         <Routes>
           <Route path="sign-up" element={<SignUp />} />
@@ -28,7 +28,7 @@ function App() {
       </BrowserRouter>
 
       <Toaster />
-    </NhostReactProvider>
+    </NhostProvider>
   );
 }
 
