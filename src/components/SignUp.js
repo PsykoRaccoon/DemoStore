@@ -1,8 +1,10 @@
 import styles from '../styles/components/SignUp.module.css';
+import { useSignUpEmailPassword } from '@nhost/react';
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Input from './Input';
+import Spinner from './Spinner'
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState('');
@@ -10,9 +12,25 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const {signUpEmailPassword,isLoading, isSuccess, needsEmailVerification, isError, error} = useSignUpEmailPassword();
+  
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+
+    signUpEmailPassword(email,password, {
+      displayName: `$(firstName) $(lastName)`.trim(),
+      metadata:{
+        firstName,
+        lastName
+      }
+    })
   };
+
+  if(isSuccess){
+    return<Navigate to="/" replace={true}/>
+  }
+
+  const disableForm = isLoading ||  needsEmailVerification
 
   return (
     <div className={styles.container}>

@@ -1,16 +1,30 @@
 import styles from '../styles/components/SignIn.module.css';
+import { useSignInEmailPassword } from '@nhost/react';
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Input from './Input';
+import Spinner from './Spinner'
+
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const {signInEmailPassword, isLoading, isSuccess, needsEmailVerification, isError, error}= useSignInEmailPassword()
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+
+    signInEmailPassword(email,password)
   };
+
+  if(isSuccess){
+    return <Navigate to ='/' replace={true}/>
+  }
+
+  const disableForm = isLoading ||  needsEmailVerification
+
 
   return (
     <div className={styles.container}>
